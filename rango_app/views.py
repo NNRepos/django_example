@@ -4,8 +4,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 def index(request):
-    return HttpResponse("hello world! <br/> <a href='/rango/about'>About</a>")
+    context_dict = {'boldmessage': "I am bold font from the context"}
+    return render(request, 'rango/index.html', context_dict)
+
 
 def about(request):
-    return HttpResponse("<p>rango_app is an app which does whatver tangoWithDjango" + 
-                        " says it does.\r\n Now go away~~~</p>") #\n doesn't work
+    return render(request, 'rango/about.html')
