@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.contrib import admin
+from rango_app.models import Category, Page
 
-# Register your models here.
+class PageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'url', 'views')
+
+admin.site.register(Category)
+admin.site.register(Page, PageAdmin)
