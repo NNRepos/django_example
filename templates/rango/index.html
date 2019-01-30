@@ -12,6 +12,16 @@
         <h1>Rango says...</h1>
         the reptillians are coming! <strong>{{ boldmessage }}</strong><br />
         <a href="/rango/about/">About</a><br />
+        <a>Top 5 categories:</a>
+        {% if categories %}
+            <ul>
+                {% for category in categories %}
+                <li><a href="/rango/category/{{category.slug}}">{{ category.name }}</a></li>
+                {% endfor %}
+           </ul>
+        {% else %}
+            <strong>No categories for you!</strong>
+        {% endif %}
         <img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" />
     </body>
 

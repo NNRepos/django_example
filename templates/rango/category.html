@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        {% if category %}
+        <title>Rango - {{ category_name_short }}</title>
+        {% else %}
+        <title>Rango - error</title>
+        {% endif %}
+    </head>
+
+    <body>
+        {% if category %}
+        <h1>Category - {{ category_name }}</h1>
+            {% if pages %}
+            <ul>
+                {% for page in pages %}
+                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                This category is empty.
+            {% endif %}
+        {% else %}
+            Category {{ category_name }} does not exist!
+        {% endif %}
+        <p>go <a href="/">back</a>?</p>
+    </body>
+
+</html>

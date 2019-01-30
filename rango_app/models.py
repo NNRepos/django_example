@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
+#whenever you change this file, run manage.py makemigrations and migrate
 from __future__ import unicode_literals
-
 from django.db import models
+from django.template.defaultfilters import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
     views = models.IntegerField(default=0)
-
+    slug = models.SlugField(unique=True, null=True)
+    
+    def save(self, *args, **kwargs):
+        print self.name + "'s id is", self.id
+        if self.id == None:
+            self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
+    
     def __unicode__(self):
         return self.name
     
