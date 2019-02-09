@@ -3,6 +3,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
+
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
@@ -30,3 +32,20 @@ class Page(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    
+    website = models.URLField(blank=True, null=True)
+    avatar = models.ImageField(upload_to='profile_images', blank=True)
+    birth_date = models.DateField(blank=True)
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('trap', 'Trap'),
+        ('wizard', 'Wizard')
+    )
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    
+    def __unicode__(self):
+        return self.user.username
