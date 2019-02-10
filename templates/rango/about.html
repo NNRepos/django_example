@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-
+{% extends 'rango/base.html' %}
 {% load staticfiles %}
-
-<html>
-
-    <head>
-        <title>About page</title>
-    </head>
-
-    <body>
-        <h1><em>This is the about page</em></h1>
-        <h2>you can learn many things about <i>Rango</i> here.</h2>
-        <h3>but instead, you will be redirected to the home page:</h3>
-        <h4><center><a href="/rango">Homepage</a></center><br />
-        feeling sad? have some sushi.</h4>
-        <img src="{% static "images/sushi.jpg" %}" alt="Picture of dead fish" /> 
-    </body>
-
-</html>
+{% block title %} - About{% endblock %}
+{% block body_block %}
+    <h1><em>This is the about page</em></h1>
+    <h2>you can learn many things about <i>Rango</i> here.</h2>
+    <h3>but instead, you will learn the following fact:</h3>
+    <p><b>The earth is round.</b></p>
+    <h4>feeling sad? have some sushi.</h4>
+    <img src="{% static "images/sushi.jpg" %}" alt="Picture of dead fish" /> 
+{% endblock %}

@@ -1,38 +1,22 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 
 {% load staticfiles %}
-
-<html>
-
-    <head>
-        <title>Rango</title>
-    </head>
-
-    <body>
-        <h1>Rango says...</h1>
-        {% if user.is_authenticated %}
+{% block body_block %}
+    <h1>Rango says...</h1>
+    {% if user.is_authenticated %}
         I did not! Oh hi <strike>Mark</strike> {{ user.username }}<br>
-        <a href="/rango/add_category/">Add category</a><br />
-        <a href="/rango/logout/">Logout</a><br />
-        
-        {% else %}
+    {% else %}
         the reptillians are coming! <strong>{{ boldmessage }}</strong><br />
-        <a href="/rango/register/">Register</a><br>
-        <a href="/rango/login/">Login</a><br>
-        
-        {% endif %}
-        <a>Top 5 categories:</a>
-        {% if categories %}
-            <ul>
-                {% for category in categories %}
-                <li><a href="/rango/category/{{category.slug}}">{{ category.name }}</a></li>
-                {% endfor %}
-           </ul>
-        {% else %}
-            <strong>There are currently no categories, I must have deleted them ;/</strong>
-        {% endif %}
-        <img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" />
-        <a href="/rango/about/">About</a>
-    </body>
-
-</html>
+    {% endif %}
+    <a>Top 5 categories:</a>
+    {% if categories %}
+        <ul>
+        {% for category in categories %}
+            <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <strong>There are currently no categories; I must have deleted them ;/</strong>
+    {% endif %}
+    <img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" />
+{% endblock %}
