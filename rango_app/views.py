@@ -7,12 +7,38 @@ from rango_app.models import Category,Page
 from rango_app.forms import CategoryForm,PageForm,UserForm,UserProfileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-import datetime
+from datetime import datetime
 
 def index(request):
     category_list = Category.objects.order_by('-views')[:5]
     context_dict = {'boldmessage': "You better believe it",
                     'categories':category_list}
+    #cookies part
+    # request.session.set_test_cookie()
+    cookies = request.session #get session cookies as dictionary - use request.COOKIES for client-side cookies
+    visits = int(cookies.get('visits', '1')) #Actually hourly visits
+    #real last visit part
+    if 'last_visit' in cookies:
+        last_visit = cookies['last_visit']
+        context_dict['last_visit'] = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+    else:
+        context_dict['last_visit'] = 'never!'
+    #hourly last visit part
+    reset_last_visit_time = False #reset hourly visit time
+    if 'last_hourly_visit' in cookies:
+        last_hourly_visit = cookies['last_hourly_visit']
+        last_hourly_visit_time = datetime.strptime(last_hourly_visit[:-7], "%Y-%m-%d %H:%M:%S")
+        if (datetime.now() - last_hourly_visit_time).seconds > 3600:
+            visits = visits + 1
+            reset_last_visit_time = True
+    else:
+        reset_last_visit_time = True
+    context_dict['visits'] = visits
+    #updating cookies part
+    if reset_last_visit_time: #we use str() because that's what request.session can handle. for lists and such, import pickle
+        request.session['last_hourly_visit'] = str(datetime.now()) #set last hourly visit
+        request.session['visits'] = visits #set number of hourly visits
+    request.session['last_visit'] = str(datetime.now()) #set real last visit
     return render(request, 'rango/index.html', context_dict)
 
 
@@ -62,7 +88,7 @@ def add_page(request, category_name_slug):
                 page = form.save(commit=False)
                 page.category = cat
                 page.views = 0
-                page.date = datetime.datetime.now()
+                page.date = datetime.now()
                 page.save()
                 return redirect('/rango/')
         else:
@@ -74,6 +100,9 @@ def add_page(request, category_name_slug):
 
 
 def register(request):
+    # if request.session.test_cookie_worked():
+        # print ">>>> TEST COOKIE WORKED!"
+        # request.session.delete_test_cookie()
     registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)

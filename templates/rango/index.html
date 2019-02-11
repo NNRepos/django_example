@@ -20,3 +20,9 @@
     {% endif %}
     <img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" />
 {% endblock %}
+{% block footer_block %}
+    <p>
+    visits: {{ visits }}<br>
+    last visit: {{ last_visit }}
+    </p>
+{% endblock %}
