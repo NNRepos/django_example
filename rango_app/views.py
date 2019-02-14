@@ -95,10 +95,11 @@ def add_page(request, category_name_slug):
             print form.errors
     else:
         form = PageForm()
-    context_dict = {'form':form, 'category': category_name_slug}
+    context_dict = {'form':form, 'category': cat}
     return render(request, 'rango/add_page.html', context_dict)
 
 
+#unused - redux
 def register(request):
     # if request.session.test_cookie_worked():
         # print ">>>> TEST COOKIE WORKED!"
@@ -128,6 +129,7 @@ def register(request):
         {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
 
 
+#unused - redux
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -147,6 +149,7 @@ def user_login(request):
         return render(request, 'rango/login.html', {})
 
 
+#unused - redux
 @login_required
 def user_logout(request):
     logout(request)

@@ -1,26 +1,48 @@
 {% extends 'rango/base.html' %}
-
 {% load staticfiles %}
-{% block body_block %}
+{% block navbar %}
+    <li class="nav-item"><a href="{% url 'add_category' %}">Add category</a></li>
+{% endblock %}
+{% block header %}
     <h1>Rango says...</h1>
     {% if user.is_authenticated %}
         I did not! Oh hi <strike>Mark</strike> {{ user.username }}<br>
     {% else %}
         the reptillians are coming! <strong>{{ boldmessage }}</strong><br />
     {% endif %}
-    <a>Top 5 categories:</a>
-    {% if categories %}
-        <ul>
-        {% for category in categories %}
-            <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <strong>There are currently no categories; I must have deleted them ;/</strong>
-    {% endif %}
-    <img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" />
 {% endblock %}
-{% block footer_block %}
+{% block body_block %}
+    <div class="row placeholders">
+        <div class="col-xs-12 col-sm-6 placeholder">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Top 5 categories:</h3>
+                </div>
+            </div>
+            {% if categories %}
+            <ul class="list-group">
+                {% for category in categories %}
+                <li class="list-group-item"><a href="{% url 'category' category.slug %}">{{ category.name }} ({{ category.views }} views)</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <strong>There are currently no categories; I must have deleted them ;/</strong>
+            {% endif %}
+        </div>
+        <div class="col-xs-12 col-sm-6 placeholder">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Some list:</h3>
+                </div>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">1</li>
+                <li class="list-group-item">2</li>
+                <li class="list-group-item">3</li>
+            </ul>
+        </div>
+    </div>
+    <img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" />
     <p>
     visits: {{ visits }}<br>
     last visit: {{ last_visit }}

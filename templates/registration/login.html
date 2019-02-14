@@ -1,12 +1,13 @@
 {% extends "rango/base.html" %}
 {% block body_block %}
-    <h1>Login</h1>
-    <form method="post" action=".">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/3.4/examples/signin/signin.css">
+    <h1>Say friend and enter</h1>
+    <form class="form-signin" role="form" method="post" action=".">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Log in" />
-        <input type="hidden" name="next" value="{{ next }}" />
+        <input class="form-control" placeholder="Username" id="id_username" maxlength="254" name="username" type="text" required autofocus=""/>
+        <input type="password" class="form-control" placeholder="Password" id="id_password" name="password"  required />
+        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" >Login</button>
     </form>
-    <p>Forgot your password? Just make a new user.</p>
-    <p><a href="{% url 'registration_register' %}">Register</a></p>
+    <p>Forgot your password? Just make a new user.
+    <a href="{% url 'registration_register' %}">Register</a></p>
 {% endblock %}
