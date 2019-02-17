@@ -64,7 +64,6 @@ def category(request, category_name_slug):
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
-    
         if form.is_valid():
             form.save(commit=True)
             return redirect('/rango/')
@@ -154,3 +153,14 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('/rango/')
+
+
+def search(request):
+    context_dict = {}
+    if request.method == 'POST':
+        search_query = request.POST.get('search_query')
+        cats = Category.objects.filter(name__icontains=search_query)
+        pages = Page.objects.filter(title__icontains=search_query)
+        context_dict = {'cats':cats, 'pages':pages, 'search':search_query}
+    context_dict['method'] = request.method
+    return render(request, 'rango/search.html', context_dict)
