@@ -1,0 +1,39 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+{% block header %}
+    <h1> Search page </h1>
+{% endblock %}
+{% block body_block %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    
+    <form id="search_form" method="post" action="{% url 'search' %}" class="active-cyan-3 active-cyan-4 mb-4">
+        {% csrf_token %}
+            <input name="search_query" type="text" placeholder="Search" aria-label="Search" class="form-control">
+    </form> 
+
+    {% if method == 'POST' %}
+    <h2>Search results for "{{ search }}":</h2>
+    <h3>Matching categories:</h3>
+    {% if cats %}
+    <ul>
+        {% for cat in cats %}
+        <li><a href="{% url 'category' cat.slug %}">{{ cat.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    No matching categories.
+    {% endif %}
+    
+    <h3>Matching pages:</h3>
+    {% if pages %}
+    <ul>
+        {% for page in pages %}
+        <li><a href="{% url 'category' page.category.slug %}">{{ page.category }}</a>/<a href="{{ page.url }}">{{ page.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    No matching pages.
+    {% endif %}
+    {% endif %}
+{% endblock %}
