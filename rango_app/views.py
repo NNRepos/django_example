@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render,redirect
-from rango_app.models import Category,Page
-from rango_app.forms import CategoryForm,PageForm,UserForm,UserProfileForm
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.template.defaultfilters import slugify
+
 from datetime import datetime
+
+from rango_app.models import Category,Page,UserProfile
+from rango_app.forms import CategoryForm,PageForm,UserForm,UserProfileForm
+
+# from Rango.settings import MEDIA_URL removed because I used context_processor instead
 
 def index(request):
     category_list = Category.objects.order_by('-views')[:5]
@@ -56,6 +63,15 @@ def category(request, category_name_slug):
         context_dict['category_name_slug'] = category.slug
         context_dict['category'] = category
         context_dict['pages'] = pages
+        context_dict['method'] = request.method
+        if request.method == 'GET':
+            category.views+=1
+            category.save()
+        elif request.method == 'POST':
+            search_query = request.POST.get('search_query')
+            context_dict['search'] = search_query
+            results = Page.objects.filter(category__slug=category.slug).filter(title__icontains=search_query)
+            context_dict['results'] = results
     except Category.DoesNotExist:
         pass
     return render(request, 'rango/category.html', context_dict)
@@ -65,8 +81,13 @@ def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
-            form.save(commit=True)
-            return redirect('/rango/')
+            newslug = slugify(form.cleaned_data['name'])
+            print Category.objects.filter(slug=newslug)
+            if not Category.objects.filter(slug=newslug).exists():
+                form.save(commit=True)
+                return redirect('/rango/')
+            else:
+                messages.info(request,'Category with similar name already exists')
         else:
             print form.errors
     else:
@@ -122,7 +143,6 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    
     return render(request,
         'rango/register.html',
         {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
@@ -164,3 +184,58 @@ def search(request):
         context_dict = {'cats':cats, 'pages':pages, 'search':search_query}
     context_dict['method'] = request.method
     return render(request, 'rango/search.html', context_dict)
+
+
+def track_url(request):
+    try:
+        if request.method == 'GET':
+            if 'page_id' in request.GET:
+                page_id = request.GET['page_id']
+                page = Page.objects.get(pk=page_id)
+                page.views+=1
+                page.save()
+                return redirect(page.url)
+            else: #illegal page_id
+                return redirect('/rango/')
+        else: #not GET
+            return redirect('/rango/')
+    except Page.DoesNotExist: #wrong page_id
+        return redirect('/rango/')
+
+
+@login_required
+def register_profile(request):
+    registered = False
+    if request.method == 'POST':
+        user = User.objects.get(username=request.user)
+        profile_form = UserProfileForm(data=request.POST)
+        if profile_form.is_valid():
+            profile = UserProfile.objects.filter(user=user)
+            if profile.exists(): #update existing UserProfile
+                profile = profile.get()
+                profile.website = profile_form.cleaned_data['website']
+                profile.birth_date = profile_form.cleaned_data['birth_date']
+                profile.gender = profile_form.cleaned_data['gender']
+            else: #create new UserProfile
+                profile = profile_form.save(commit=False)
+                profile.user = user
+            if 'avatar' in request.FILES:
+                profile.avatar = request.FILES['avatar']
+            profile.save()
+            registered = True
+        else:
+            print profile_form.errors
+    else:
+        profile_form = UserProfileForm()
+    return render(request,
+        'rango/profile_registration.html',
+        {'profile_form': profile_form, 'registered': registered} )
+
+
+#TODO maybe add option to see other ppl's profiles
+@login_required
+def profile(request):
+    user = User.objects.get(username=request.user)
+    profile = UserProfile.objects.get(user=user)
+    context_dict = {'user':user, 'profile':profile}
+    return render (request, 'rango/profile.html', context_dict)

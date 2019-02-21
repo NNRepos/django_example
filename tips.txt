@@ -1,3 +1,5 @@
 1. If you get the "NoReverseMatch" error, it may point at the wrong file (probably a bug in the implementation of django 1.11).
     The probable cause is a misuse of a django template, e.g. {% url reference.causing.error %}
 2. The bootstrap cdn css links(copied from https://getbootstrap.com/) did not work for me. I've use the maxCDN files.
+3. It seems like the registration-redux makes some things harder to do, such as redirecting after filling the logout form.
+4. The django templating language does not understand html comments, if you want to comment it out you'll have to delete the curly braces.

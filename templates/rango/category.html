@@ -2,19 +2,45 @@
 {% if category %}
 {% block title %} - {{ category_name_short }}{% endblock %}
 {% endif %}
+{% block header %}
+    {% if category %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <form id="category_search_form" class="active-purple-3 active-purple-4 mb-4" method="post" action="{% url 'category' category.slug %}">
+        {% csrf_token %}
+        <input name="search_query" type="text" placeholder="Search in {{ category.name }}" class="form-control">
+        <!-- <button type="submit" class="btn btn-success">Search</button> -->
+    </form>
+    {% endif %}
+{% endblock %}
 {% block body_block %}
     {% if category %}
+    {% if method == 'POST' %}
+    <h2>Search results for "{{ search }}":</h2>
+    {% if results %}
+    <ul>
+        {% for result in results %}
+        <li><a href="{{ result.url }}">{{ result.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    No matching pages.
+    {% endif %}
+    {% endif %}
     <h1>{{ category_name }}</h1>
     {% if pages %}
     <ul>
         {% for page in pages %}
-        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+        <li><a href="{% url 'goto' %}?page_id={{page.id}}">{{ page.title }}</a></li>
         {% endfor %}
     </ul>
     {% else %}
-    This category is empty.
+    This category is empty. 
     {% endif %}
     {% if user.is_authenticated %}
+    {% if not pages %}
+    You can change that:<br>
+    {% endif %}
     <a href="{% url 'add_page' category_name_slug %}">Add a page</a>
     {% endif %}
     {% else %}

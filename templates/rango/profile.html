@@ -1,0 +1,15 @@
+{% extends 'rango/base.html' %}
+{% block body_block %}
+    <h2>Your profile details:</h2><br>
+    <ul>
+    <li>username: {{ user.username }}</li>
+    <li>email: {{ user.email }}</li>
+    <li>website: {{ profile.website }}</li>
+    <li>birthdate: {{ profile.birthdate }}</li>
+    <li>avatar: <img src="{{ MEDIA_URL }}{{ profile.avatar }}"></li>
+    <li>gender: {{ profile.gender }}</li>
+    </ul>
+    <a href="rango/add_profile">edit profile</a><br>
+    
+    To change the password, use the link in the top right corner.
+{% endblock %}

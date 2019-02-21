@@ -35,7 +35,6 @@ class Page(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    
     website = models.URLField(blank=True, null=True)
     avatar = models.ImageField(upload_to='profile_images', blank=True)
     birth_date = models.DateField(blank=True)

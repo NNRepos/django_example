@@ -1,0 +1,15 @@
+{% extends 'rango/base.html' %}
+{% block body_block %}
+    {% if registered %}
+        <div><span style="color:#ff0000;">C</span><span style="color:#ff2a00;">O</span><span style="color:#ff5500;">N</span><span style="color:#ff7f00;">G</span><span style="color:#ffbf00;">R</span><span style="color:#ffff00;">A</span><span style="color:#aaff00;">T</span><span style="color:#55ff00;">U</span><span style="color:#00ff00;">L</span><span style="color:#00ff80;">A</span><span style="color:#00ffff;">T</span><span style="color:#00aaff;">I</span><span style="color:#0055ff;">O</span><span style="color:#0000ff;">N</span><span style="color:#4600ff;">S</span><span style="color:#8b00ff;">!</span></div><br/>
+        You have successfully registered!
+    {% else %}
+        <h3>Just sign here, here, here and here.</h3>
+        <form id="profile_form" method="post" action="/rango/add_profile/"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ profile_form.as_p }}
+            <input type="submit" name="submit" value="Register" />
+        </form>
+    {% endif %}
+{% endblock %}

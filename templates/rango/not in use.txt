@@ -1,0 +1,3 @@
+due to using redux, the following aren't in use:
+register.html
+login.html
