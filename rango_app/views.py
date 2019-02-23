@@ -57,7 +57,7 @@ def category(request, category_name_slug):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_name_slug)
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by('-views')
         context_dict['category_name'] = category.name
         context_dict['category_name_short'] = category.name.split(' ')[0]
         context_dict['category_name_slug'] = category.slug
