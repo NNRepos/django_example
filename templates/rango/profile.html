@@ -9,7 +9,7 @@
     <li>avatar: <img src="{{ MEDIA_URL }}{{ profile.avatar }}"></li>
     <li>gender: {{ profile.gender }}</li>
     </ul>
-    <a href="rango/add_profile">edit profile</a><br>
+    <a href="{% url 'add_profile' %}">edit profile</a><br>
     
     To change the password, use the link in the top right corner.
 {% endblock %}

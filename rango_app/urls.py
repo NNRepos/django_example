@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^goto', views.track_url, name='goto'),
     url(r'^add_profile', views.register_profile, name='add_profile'),
     url(r'^profile', views.profile, name='profile'),
+    url(r'^suggest_category', views.suggest_category, name='suggest_category'),
     # url(r'^register', views.register, name='register'), #using redux instead
     # url(r'^login/', views.user_login, name='login'),
     # url(r'^logout/', views.user_logout, name='logout'),

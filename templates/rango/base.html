@@ -11,9 +11,10 @@
         <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/examples/dashboard/dashboard.css">
         <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/assets/css/ie10-viewport-bug-workaround.css">
-        <link rel="stylesheet" href="{% static 'css/search.css' %}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{% static "js/rango-ajax.js" %}"></script>
         <script src="{% static "js/rango-jquery.js" %}"></script>
+        <link rel="stylesheet" href="{% static 'css/search.css' %}">
     </head>
     <body>
         
@@ -52,6 +53,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
+                    <!-- Search category with ajax: -->
+                    <!-- <ul class="nav nav-list"> -->
+                        <!-- <li class="nav-header">Find a Category</li> -->
+                        <!-- <form> -->
+                        <!-- <br> -->
+                        <!-- <li><input  class="search-query span10" type="text" name="suggestion" value="" id="suggestion" /></li> -->
+                        <!-- </form> -->
+                    <!-- </ul> -->
+                    <!-- <div id="cats"></div> -->
                     {% block side_block %}
                         {% get_category_list category %}
                     {% endblock %}

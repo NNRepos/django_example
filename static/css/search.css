@@ -1,3 +1,15 @@
+/* button from https://www.w3schools.com/css/css3_buttons.asp for some reason, it does not load in my HTML*/
+.button-purple {
+    background-color: #ce93d8;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
 /*search css from https://mdbootstrap.com/docs/jquery/forms/search/ */
 .active-pink-4 input[type=text]:focus:not([readonly]) {
     border: 1px solid #f48fb1;
@@ -24,5 +36,18 @@
     box-shadow: 0 0 0 1px #4dd0e1;
 }
 
-/* navbar profile image css from netflix */
-.profile-link{position:relative;display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-moz-box-align:center;-ms-flex-align:center;align-items:center}
+/* navbar profile image css from netflix homepage */
+.profile-link {
+    position:relative;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-moz-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align:center;
+    -webkit-align-items:center;
+    -moz-box-align:center;
+    -ms-flex-align:center;
+    align-items:center;
+}
+

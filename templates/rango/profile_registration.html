@@ -5,7 +5,7 @@
         You have successfully registered!
     {% else %}
         <h3>Just sign here, here, here and here.</h3>
-        <form id="profile_form" method="post" action="/rango/add_profile/"
+        <form id="profile_form" method="post" action="{% url 'add_profile' %}"
             enctype="multipart/form-data">
             {% csrf_token %}
             {{ profile_form.as_p }}

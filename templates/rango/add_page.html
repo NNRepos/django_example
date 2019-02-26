@@ -2,8 +2,8 @@
 {% block body_block %}
     <h1>Page creation</h1>
     {% if category %}
-     <h3 class="form-signin-heading">Add a page to the<a href="/rango/category/{{category.slug}}/"> {{ category.name }}</a> category:</h3>
-    <form id="page_form" method="post" action="/rango/category/{{ category.slug }}/add_page/">
+     <h3 class="form-signin-heading">Add a page to <a href="{% url 'category' category.slug %}">{{ category.name }}</a>:</h3>
+    <form id="page_form" method="post" action="{% url 'add_page' category.slug %}">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
             {{ hidden }}

@@ -16,6 +16,10 @@ from rango_app.forms import CategoryForm,PageForm,UserForm,UserProfileForm
 
 # from Rango.settings import MEDIA_URL removed because I used context_processor instead
 
+def go2index(request):
+    return redirect('rango/')
+
+
 def index(request):
     category_list = Category.objects.order_by('-views')[:5]
     context_dict = {'boldmessage': "You better believe it",
@@ -221,6 +225,7 @@ def register_profile(request):
                 profile.user = user
             if 'avatar' in request.FILES:
                 profile.avatar = request.FILES['avatar']
+            #TODO: else: profile.avatar = None, do this when the registration already loads the old settings
             profile.save()
             registered = True
         else:
@@ -239,3 +244,22 @@ def profile(request):
     profile = UserProfile.objects.get(user=user)
     context_dict = {'user':user, 'profile':profile}
     return render (request, 'rango/profile.html', context_dict)
+
+
+#fuction for suggest_category
+def get_category_list(max_results=0, starts_with=''):
+    cat_list = []
+    if starts_with:
+        cat_list = Category.objects.filter(name__istartswith=starts_with)
+        if cat_list and max_results > 0 and cat_list.count() > max_results:
+            cat_list = cat_list[:max_results]
+    return cat_list
+
+
+def suggest_category(request):
+    cat_list = []
+    max_res, starts_with = 8, ''
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+    cat_list = get_category_list(max_res, starts_with)
+    return render(request, 'rango/cats.html', {'cats': cat_list })
