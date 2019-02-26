@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 #whenever you change this file, run manage.py makemigrations and migrate
 from __future__ import unicode_literals
+
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
+from datetime import datetime
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
@@ -14,6 +16,8 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         if self.id == None:
             self.slug = slugify(self.name)
+        if self.views < 0:
+            self.views = 0
         super(Category, self).save(*args, **kwargs)
     
     def __unicode__(self):
@@ -29,7 +33,12 @@ class Page(models.Model):
     url = models.URLField(max_length=200)
     views = models.IntegerField(default=0)
     date = models.DateField()
-
+    
+    def save(self, *args, **kwargs):
+        if self.date == None:
+            self.date = datetime.now()
+        super(Page, self).save(*args, **kwargs)
+    
     def __unicode__(self):
         return self.title
 

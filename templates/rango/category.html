@@ -33,7 +33,8 @@
         <div class="panel-body">
             <div class="list-group">
                 {% for page in pages %}
-                    <div class="list-group-item"><a href="{% url 'goto' %}?page_id={{page.id}}">{{ page.title }}</a></div>
+                <!-- TODO: view/views -->
+                    <div class="list-group-item"><a href="{% url 'goto' %}?page_id={{page.id}}">{{ page.title }}</a> ({{ page.views }} views since {{ page.date }}</div>
                 {% endfor %}
             </div>
         </div>
