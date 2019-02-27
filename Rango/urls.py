@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^rango/', include('rango_app.urls')),
     url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r'^', views.go2index, name="rango_blank_index"), #default, instead of 404.
+    # from django.views.generic.base import RedirectView - another option
+    # url(r'^$', RedirectView.as_view(url='/rango/')),
+    url(r'^$', views.go2index, name="rango_blank_index"), #default, instead of 404. Did not work with static for some reason
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

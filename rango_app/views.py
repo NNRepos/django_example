@@ -17,7 +17,7 @@ from rango_app.forms import CategoryForm,PageForm,UserForm,UserProfileForm
 # from Rango.settings import MEDIA_URL removed because I used context_processor instead
 
 def go2index(request):
-    return redirect('rango/')
+    return redirect('/rango/')
 
 
 def index(request):
