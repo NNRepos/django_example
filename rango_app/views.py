@@ -226,12 +226,14 @@ def register_profile(request):
             if 'avatar' in request.FILES:
                 profile.avatar = request.FILES['avatar']
             #TODO: else: profile.avatar = None, do this when the registration already loads the old settings
+            print "hello"
             profile.save()
             registered = True
         else:
             print profile_form.errors
     else:
         profile_form = UserProfileForm()
+    print "hi, registered is",registered
     return render(request,
         'rango/profile_registration.html',
         {'profile_form': profile_form, 'registered': registered} )
@@ -241,7 +243,10 @@ def register_profile(request):
 @login_required
 def profile(request):
     user = User.objects.get(username=request.user)
-    profile = UserProfile.objects.get(user=user)
+    try:
+        profile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        profile = None
     context_dict = {'user':user, 'profile':profile}
     return render (request, 'rango/profile.html', context_dict)
 
